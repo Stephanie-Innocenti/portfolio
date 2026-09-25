@@ -1,6 +1,6 @@
 "use client";
 
-import { localeOptions } from "@/app/lib/i18n";
+import { localeOptions } from "@/lib/i18n";
 import { useLanguage } from "@/app/components/language-provider";
 
 export default function LanguageSelect() {

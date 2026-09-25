@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Newsreader } from "next/font/google";
+import { Bricolage_Grotesque, Newsreader, Geist } from "next/font/google";
 import { LanguageProvider } from "@/app/components/language-provider";
 import "./globals.css";
+import { cn } from "cn";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const display = Bricolage_Grotesque({ subsets: ["latin"], variable: "--f-display" });
 const serif = Newsreader({ subsets: ["latin"], variable: "--f-serif" });
@@ -13,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="it" className={`${display.variable} ${serif.variable}`}>
+    <html lang="it" className={cn(display.variable, serif.variable, "font-sans dark", geist.variable)}>
       <body className="min-h-dvh antialiased"><LanguageProvider>{children}</LanguageProvider></body>
     </html>
   );

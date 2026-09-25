@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import type { NewsItem } from "@/app/lib/news";
+import type { NewsItem } from "@/lib/news";
 import { useLanguage } from "@/app/components/language-provider";
 
 const arrow =

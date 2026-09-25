@@ -4,7 +4,7 @@ import Link from "next/link";
 import NewsCarousel from "@/app/components/news-carousel";
 import LanguageSelect from "@/app/components/language-select";
 import { useLanguage } from "@/app/components/language-provider";
-import type { NewsItem } from "@/app/lib/news";
+import type { NewsItem } from "@/lib/news";
 
 export default function HomeContent({ news }: { news: NewsItem[] }) {
   const { t } = useLanguage();

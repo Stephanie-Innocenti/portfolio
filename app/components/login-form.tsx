@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { signIn } from "@/app/lib/auth-client";
+import { signIn } from "@/lib/auth-client";
 import { useLanguage } from "@/app/components/language-provider";
 
 export default function LoginForm() {

@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, startTransition, useContext, useEffect, useState } from "react";
-import { copy, type Copy, type Locale } from "@/app/lib/i18n";
+import { copy, type Copy, type Locale } from "@/lib/i18n";
 
 type LanguageContextValue = { locale: Locale; setLocale: (locale: Locale) => void; t: Copy };
 const LanguageContext = createContext<LanguageContextValue | null>(null);
