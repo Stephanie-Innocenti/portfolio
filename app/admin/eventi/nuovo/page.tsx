@@ -23,7 +23,7 @@ export default function NewEventPage() {
         setError(res.message);
         return;
       }
-      router.push(`/admin/eventi/${res.eventId}`);
+      router.push(`/admin/eventi/nuovo/${res.eventId}`);
     });
   }
 

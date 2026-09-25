@@ -79,11 +79,13 @@
   }
 }
 
-.archive-page {
+.archive-page,
+.admin-page {
   background: #4d1942;
 }
 
-.archive-page::before {
+.archive-page::before,
+.admin-page::before {
   position: absolute;
   inset: -24%;
   z-index: -2;
@@ -98,7 +100,8 @@
   will-change: transform;
 }
 
-.archive-page::after {
+.archive-page::after,
+.admin-page::after {
   position: absolute;
   inset: 0;
   z-index: -1;
@@ -107,7 +110,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .archive-page::before {
+  .archive-page::before,
+  .admin-page::before {
     animation: none;
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { notFound } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";

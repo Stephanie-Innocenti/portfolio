@@ -5,6 +5,11 @@ import dotenv from "dotenv";
 async function main() {
   dotenv.config({ path: ".env.local" });
   const { db } = await import("../lib/db");
+  const igHandle = process.env.SEED_IG_HANDLE?.trim().replace(/^@/, "").toLowerCase();
+
+  if (!igHandle) {
+    throw new Error("SEED_IG_HANDLE mancante in .env.local: aggiungi il nickname per il codice di prova.");
+  }
 
   await db
     .insert(event)
@@ -81,7 +86,7 @@ async function main() {
 
   await db.insert(downloadCode).values({
     id: crypto.randomUUID(),
-    igHandle: "stephanie_cosplay",
+    igHandle,
     codeHash: hashCode(code),
     swissTransferUrl: "https://www.swisstransfer.com/d/esempio",
     eventId: ev.id,
