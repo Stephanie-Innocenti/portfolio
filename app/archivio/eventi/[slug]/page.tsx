@@ -6,7 +6,14 @@ import { db } from "@/lib/db";
 import { event } from "@/lib/schema";
 
 export default async function EventoPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  let slug: string;
+
+  try {
+    slug = decodeURIComponent(rawSlug).normalize("NFC");
+  } catch {
+    notFound();
+  }
 
   const ev = await db.query.event.findFirst({
     where: eq(event.slug, slug),
