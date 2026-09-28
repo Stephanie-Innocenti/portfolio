@@ -6,6 +6,7 @@ import { event } from "@/lib/schema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AddPhotosForm from "./add-photos-form";
 import DeletePhotoButton from "./delete-photo-button";
+import DeleteEventButton from "./delete-event-button";
 
 export default async function EventAdminPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -19,9 +20,12 @@ export default async function EventAdminPage({ params }: { params: Promise<{ id:
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-xl font-semibold">{ev.title}</h1>
-        <p className="text-sm text-haze">/archivio/eventi/{ev.slug}</p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="text-xl font-semibold">{ev.title}</h1>
+          <p className="text-sm text-haze">/archivio/eventi/{ev.slug}</p>
+        </div>
+        {ev.photos.length === 0 && <DeleteEventButton eventId={ev.id} />}
       </div>
 
       <Card>

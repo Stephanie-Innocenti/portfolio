@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { ArrowUpRight, LoaderCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,17 +25,17 @@ export default function DownloadRequestForm() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Scarica le tue foto</CardTitle>
-        <CardDescription>
-          Inserisci il nickname Instagram e la password temporanea che ti ho mandato.
+    <Card className="border border-white/15 bg-black/30 shadow-xl shadow-black/20 backdrop-blur-md">
+      <CardHeader className="gap-2">
+        <CardTitle className="text-xl font-bold text-white">Scarica le tue foto</CardTitle>
+        <CardDescription className="leading-relaxed text-white/70">
+          Inserisci il tuo nome Instagram e il codice ricevuto in messaggio per aprire il link alle tue foto. Il link consente un numero limitato di download.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="ig">Nickname Instagram</Label>
+            <Label htmlFor="ig" className="font-semibold text-white/90">Nome Instagram</Label>
             <Input
               id="ig"
               placeholder="@tuonickname"
@@ -45,7 +46,7 @@ export default function DownloadRequestForm() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="code">Password temporanea</Label>
+            <Label htmlFor="code" className="font-semibold text-white/90">Codice di download</Label>
             <Input
               id="code"
               placeholder="Es. K7P2MXQ9"
@@ -55,8 +56,13 @@ export default function DownloadRequestForm() {
             />
           </div>
 
-          <Button type="submit" disabled={pending}>
-            {pending ? "Verifica…" : "Sblocca link"}
+          <Button
+            type="submit"
+            disabled={pending}
+            className="min-h-11 w-full font-bold shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg"
+          >
+            {pending ? <LoaderCircle className="animate-spin" aria-hidden="true" /> : <ArrowUpRight aria-hidden="true" />}
+            {pending ? "Verifica…" : "Apri il link"}
           </Button>
         </form>
 

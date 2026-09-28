@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { desc } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import RevokeButton from "./revoke-button";
+import DeleteCodeButton from "./delete-code-button";
 
 function codeStatus(c: { revoked: boolean; expiresAt: Date; usedCount: number; maxUses: number }) {
   if (c.revoked) return { label: "Revocato", variant: "secondary" as const };
@@ -99,7 +99,7 @@ export default async function AdminDashboard() {
                       {c.expiresAt.toLocaleString("it-IT")}
                     </p>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-3">
                     <Badge variant={status.variant}>{status.label}</Badge>
                     {status.label === "Attivo" ? (
                       <RevokeButton id={c.id} />
@@ -113,6 +113,7 @@ export default async function AdminDashboard() {
                         Rigenera
                       </Link>
                     )}
+                    <DeleteCodeButton id={c.id} igHandle={c.igHandle} />
                   </div>
                 </CardContent>
               </Card>

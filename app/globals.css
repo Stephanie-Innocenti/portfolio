@@ -11,6 +11,7 @@
   --color-haze: #b9bcf2;
   --font-display: var(--f-display), system-ui, sans-serif;
   --font-serif: var(--f-serif), Georgia, serif;
+  --font-script: var(--f-script), cursive;
   --font-heading: var(--font-sans);
   --font-sans: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -79,6 +80,38 @@
   }
 }
 
+@keyframes account-avatar-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(2deg);
+  }
+}
+
+.account-avatar-shell {
+  display: grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 2px solid rgb(255 255 255 / 75%);
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #ff5da2, #28c9d7);
+  box-shadow: 0 0 0 4px rgb(255 255 255 / 10%), 0 8px 24px rgb(0 0 0 / 25%);
+  animation: account-avatar-float 4s ease-in-out infinite;
+}
+
+.account-avatar {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  place-items: center;
+  border-radius: inherit;
+}
+
 .archive-page,
 .admin-page {
   background: #4d1942;
@@ -111,7 +144,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .archive-page::before,
-  .admin-page::before {
+  .admin-page::before,
+  .account-avatar-shell {
     animation: none;
   }
 }

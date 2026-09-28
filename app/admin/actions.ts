@@ -98,6 +98,26 @@ export async function deletePhoto(photoId: string, eventId: string) {
   revalidatePath(`/admin/eventi/${eventId}`);
 }
 
+export async function deleteEvent(eventId: string) {
+  await requireAdmin();
+
+  const ev = await db.query.event.findFirst({
+    where: eq(event.id, eventId),
+    with: { photos: true },
+  });
+  if (!ev) return { ok: false as const, message: "Evento non trovato." };
+  if (ev.photos.length > 0) {
+    return { ok: false as const, message: "Rimuovi tutte le foto prima di eliminare l'evento." };
+  }
+
+  await db.delete(event).where(eq(event.id, eventId));
+
+  revalidatePath("/admin");
+  revalidatePath("/archivio");
+  revalidatePath(`/archivio/eventi/${ev.slug}`);
+  return { ok: true as const };
+}
+
 export async function createDownloadCode(formData: FormData) {
   await requireAdmin();
 
@@ -140,5 +160,11 @@ export async function createDownloadCode(formData: FormData) {
 export async function revokeCode(id: string) {
   await requireAdmin();
   await db.update(downloadCode).set({ revoked: true }).where(eq(downloadCode.id, id));
-  revalidatePath("/admin/codici");
+  revalidatePath("/admin");
+}
+
+export async function deleteDownloadCode(id: string) {
+  await requireAdmin();
+  await db.delete(downloadCode).where(eq(downloadCode.id, id));
+  revalidatePath("/admin");
 }

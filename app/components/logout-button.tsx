@@ -1,23 +1,34 @@
 "use client";
 
+import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { LoaderCircle, LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { signOut } from "@/lib/auth-client";
 
 export default function LogoutButton() {
   const router = useRouter();
+  const [pending, startTransition] = useTransition();
 
-  async function handleLogout() {
-    await signOut();
-    router.push("/"); // Logout → dashboard iniziale pubblica, come richiesto.
-    router.refresh();
+  function handleLogout() {
+    startTransition(async () => {
+      await signOut();
+      router.push("/");
+      router.refresh();
+    });
   }
 
   return (
-    <button
+    <Button
+      type="button"
+      variant="outline"
+      size="lg"
+      disabled={pending}
       onClick={handleLogout}
-      className="rounded-full border border-haze/50 px-4 py-2 text-sm hover:bg-white/10"
+      className="min-h-10 border-white/25 bg-black/15 px-4 py-2 font-bold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:border-white/50 hover:bg-white/10 hover:text-white"
     >
-      Esci
-    </button>
+      {pending ? <LoaderCircle className="animate-spin" aria-hidden="true" /> : <LogOut aria-hidden="true" />}
+      {pending ? "Uscita…" : "Esci"}
+    </Button>
   );
 }

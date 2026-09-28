@@ -8,9 +8,9 @@ import type { NewsItem } from "@/lib/news";
 
 export default function HomeContent({ news }: { news: NewsItem[] }) {
   const { t } = useLanguage();
-  const mail = `mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "tuamail@example.com"}?subject=${encodeURIComponent(
-    t.contact,
-  )}`;
+  const mail = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+    process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "tuamail@example.com",
+  )}&su=${encodeURIComponent(t.contact)}`;
 
   return (
     <>
@@ -34,7 +34,7 @@ export default function HomeContent({ news }: { news: NewsItem[] }) {
             <p className="mt-6 max-w-xl text-lg text-haze">{t.heroDescription}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/login" className="rounded-full bg-neon px-6 py-3 font-semibold text-moquette transition hover:brightness-110">{t.archive}</Link>
-              <a href={mail} className="rounded-full border border-badge/40 px-6 py-3 font-semibold transition hover:bg-white/10">{t.contact}</a>
+              <a href={mail} target="_blank" rel="noopener noreferrer" className="rounded-full border border-badge/40 px-6 py-3 font-semibold transition hover:bg-white/10">{t.contact}</a>
             </div>
           </div>
         </section>
