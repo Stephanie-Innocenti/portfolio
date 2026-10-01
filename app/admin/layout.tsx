@@ -17,6 +17,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <Link href="/admin/codici/nuovo" className="text-haze hover:text-white">
             Nuovo codice
           </Link>
+          <Link href="/admin/foto-personali" className="text-haze hover:text-white">
+            Foto personali
+          </Link>
           <Link href="/archivio" className="text-haze hover:text-white sm:ml-auto">
             Vai all&apos;archivio →
           </Link>

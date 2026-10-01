@@ -43,7 +43,7 @@ export default async function AdminDashboard() {
               <CardTitle className="mt-2">Nuovo evento</CardTitle>
             </CardHeader>
             <CardContent className="flex items-end justify-between gap-4 text-sm text-haze">
-              Crea una nuova cartella con copertina e foto di anteprima.
+              Crea una cartella e carica copertina e anteprime su R2.
               <span className="shrink-0 text-lg text-white transition-transform group-hover:translate-x-1">→</span>
             </CardContent>
           </Card>
@@ -55,7 +55,7 @@ export default async function AdminDashboard() {
               <CardTitle className="mt-2">Nuovo codice</CardTitle>
             </CardHeader>
             <CardContent className="flex items-end justify-between gap-4 text-sm text-haze">
-              Genera un accesso temporaneo collegato a un link SwissTransfer.
+              Genera un accesso temporaneo alla galleria privata R2.
               <span className="shrink-0 text-lg text-white transition-transform group-hover:translate-x-1">→</span>
             </CardContent>
           </Card>

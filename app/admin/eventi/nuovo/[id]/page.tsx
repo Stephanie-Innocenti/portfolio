@@ -44,7 +44,7 @@ export default async function EventAdminPage({ params }: { params: Promise<{ id:
         </CardContent>
       </Card>
 
-      <AddPhotosForm eventId={ev.id} />
+      <AddPhotosForm eventId={ev.id} eventSlug={ev.slug} />
     </div>
   );
 }

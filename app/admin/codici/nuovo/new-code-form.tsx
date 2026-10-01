@@ -90,13 +90,15 @@ export default function NewCodeForm({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="swissTransferUrl">Link SwissTransfer</Label>
-            <Input id="swissTransferUrl" name="swissTransferUrl" required placeholder="https://www.swisstransfer.com/d/…" />
-          </div>
-
-          <div className="flex flex-col gap-1.5">
             <Label htmlFor="eventId">Evento collegato (opzionale)</Label>
-            <Select name="eventId" defaultValue={defaultEventId}>
+            <Select
+              name="eventId"
+              defaultValue={defaultEventId}
+              items={events.map((eventOption) => ({
+                value: eventOption.id,
+                label: `${eventOption.title} (${eventOption.year})`,
+              }))}
+            >
               <SelectTrigger id="eventId" className="w-full bg-white/5 text-white">
                 <SelectValue placeholder="Nessuno" />
               </SelectTrigger>

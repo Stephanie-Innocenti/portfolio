@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Photo Portfolio
 
-## Getting Started
+A private admin area for organizing event galleries and delivering personal photo collections. The app uses Next.js, Neon Postgres with Drizzle ORM, Better Auth, and Cloudflare R2 object storage.
 
-First, run the development server:
+## Setup
+
+Install dependencies and create `.env.local` in the project root. Configure these variables there; do not commit real credentials:
+
+| Variable | Purpose |
+| --- | --- |
+| `DATABASE_URL` | Neon Postgres connection string |
+| `BETTER_AUTH_URL` | Canonical URL of this app |
+| `BETTER_AUTH_SECRET` | Better Auth secret and personal-photo cookie signing key |
+| `GOOGLE_CLIENT_ID` | Google sign-in client ID |
+| `GOOGLE_CLIENT_SECRET` | Google sign-in client secret |
+| `BETTER_AUTH_TRUSTED_ORIGINS` | Optional comma-separated additional trusted origins |
+| `R2_ACCOUNT_ID` | Cloudflare account ID used for the S3-compatible API |
+| `R2_ACCESS_KEY_ID` | R2 API access key ID |
+| `R2_SECRET_ACCESS_KEY` | R2 API secret key |
+| `R2_BUCKET_NAME` | Bucket used for uploaded images |
+| `R2_PUBLIC_URL` | Public base URL for objects, without a trailing slash |
+
+Push the Drizzle schema to the configured database and start the app:
 
 ```bash
+npx drizzle-kit push
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Register an account, then promote it to admin:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npx tsx scripts/make-admin.ts you@example.com
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Other project commands are `npm run lint`, `npm run build`, and `npm start` (after building).
 
-## Learn More
+## Photo Storage And Delivery
 
-To learn more about Next.js, take a look at the following resources:
+Image binaries are stored in Cloudflare R2. Postgres stores event/photo metadata and the public object URLs; it does not store the image bytes. Uploads use a short-lived presigned S3-compatible `PUT` URL: an admin-only server action authorizes the request and creates the URL, then the browser uploads each file directly to R2. Successful uploads are recorded in the database.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Object keys are grouped by purpose:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Event covers: `eventi/<year>/<event-slug>/copertina/...`
+- Event previews: `eventi/<year>/<event-slug>/anteprime/...`
+- Personal photos: `personali/<normalized-handle>/...`
 
-## Deploy on Vercel
+Event covers and preview photos are displayed in the signed-in archive from their R2 URLs. The Next.js image configuration allows the configured R2 public hostname.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Personal photos are linked to a normalized Instagram handle and can optionally be grouped under an event. A valid download code grants a signed, HTTP-only cookie for two hours. The personal gallery checks that cookie, and the ZIP endpoint independently checks it again before fetching the original files from R2 and returning them as an attachment.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Important Access Note
+
+The cookie protects the app's personal-gallery page and ZIP endpoint, but it does not make a publicly addressable R2 object private. If `R2_PUBLIC_URL` points to a public R2 domain, anyone who obtains an individual object URL may be able to open that object directly, bypassing the app's cookie check. For strict per-person confidentiality, use a private bucket and serve images through authenticated, short-lived signed `GET` URLs or an authenticated application endpoint. Do not treat the current public object URLs as secret access controls.
+
+Deleting photos attempts to remove the R2 object and its database record. R2 deletion is best-effort: a storage failure does not block the database cleanup and can leave an unreferenced object in the bucket.
+
+## Copyright
+
+The photographs and portfolio content are the author's original work and are protected by copyright. All rights are reserved. No permission to copy, redistribute, publish, or use the work commercially is granted by this repository.

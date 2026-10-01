@@ -104,3 +104,19 @@ export const photoRelations = relations(photo, ({ one }) => ({
 export const downloadCodeRelations = relations(downloadCode, ({ one }) => ({
   event: one(event, { fields: [downloadCode.eventId], references: [event.id] }),
 }));
+
+// Foto in piena qualità di UNA persona, mai mostrate pubblicamente:
+// visibili solo dopo aver sbloccato il proprio codice, mai nell'archivio generale.
+export const personalPhoto = pgTable("personal_photo", {
+  id: text("id").primaryKey(),
+  igHandle: text("ig_handle").notNull(), // normalizzato con lib/handle.ts, niente foreign key: solo testo
+  eventId: text("event_id").references(() => event.id, { onDelete: "set null" }), // per raggruppare "Fiera Milano 2026" nella griglia
+  url: text("url").notNull(), // oggetto R2 in piena risoluzione
+  width: integer("width"),
+  height: integer("height"),
+  createdAt: timestamp("created_at").notNull().defaultNow(), // usato per la data mostrata nella griglia
+});
+
+export const personalPhotoRelations = relations(personalPhoto, ({ one }) => ({
+  event: one(event, { fields: [personalPhoto.eventId], references: [event.id] }),
+}));
